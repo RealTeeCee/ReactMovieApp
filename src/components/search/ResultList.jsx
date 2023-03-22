@@ -6,7 +6,6 @@ import classes from "./ResultList.module.css";
 const API_KEY = "b5a3ad3898299a6668f4d42b2a86f2c5";
 
 const ResultList = (props) => {
-  
   const [data, setData] = useState([]);
   //state dùng thể hiện trạng thái đã click vào movie chưa?
   const [clickedMovie, setClickedMovie] = useState("");
@@ -14,16 +13,15 @@ const ResultList = (props) => {
   const request = `/search/movie?api_key=${API_KEY}&language=en-US&query=${props.query}`;
 
   // Lấy dữ liệu
-  const { error, sendRequest: fetchMovie } = useHttp();
+  const { sendRequest: fetchMovie } = useHttp();
 
   useEffect(() => {
-    
     setIsClickMovie(false);
     const getMovie = (data) => {
       setData(data.results);
     };
     fetchMovie({ url: request }, getMovie);
-  }, [request]);
+  }, [fetchMovie, request]);
 
   // Sự kiện khi click movie
   const onClickMovieHandler = (event) => {
@@ -42,7 +40,9 @@ const ResultList = (props) => {
       <h2>Search Result</h2>
       <div className={classes.movie}>
         {data.length === 0 ? (
-          <h3 className={classes.notfound}>Movie name: "{props.query}" NOT FOUND!</h3>
+          <h3 className={classes.notfound}>
+            Movie name: "{props.query}" NOT FOUND!
+          </h3>
         ) : (
           data.map((movie) => (
             <img

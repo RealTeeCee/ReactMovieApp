@@ -9,7 +9,7 @@ const Banner = () => {
   const request = `/discover/tv?api_key=${API_KEY}&with_network=123`;
 
   // Lấy dữ liệu API
-  const { error, sendRequest: fetchMovie } = useHttp();
+  const { sendRequest: fetchMovie } = useHttp();
 
   useEffect(() => {
     const getRandomMovie = (movie) => {
@@ -19,7 +19,7 @@ const Banner = () => {
       );
     };
     fetchMovie({ url: request }, getRandomMovie);
-  }, []);
+  }, [fetchMovie, request]);
 
   return (
     <div className={classes.banner}>

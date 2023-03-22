@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/iframe-has-title */
 import React, { useState, useEffect } from "react";
 import useHttp from "../../hooks/useHttp";
 import classes from "./MovieDetail.module.css";
@@ -20,7 +21,7 @@ const MovieDetail = (props) => {
   //state dùng để ktra xem movie đó có sẵn trailer ko? nếu ko có thì hiện ảnh thay thế
   const [trailer, setTrailer] = useState(image);
   const request = `/movie/${props.movie.id}/videos?api_key=${API_KEY}`;
-      //console.log(request);
+  //console.log(request);
   // Lấy dữ liệu
   const { error, sendRequest: fetchMovie } = useHttp();
   useEffect(() => {
@@ -28,7 +29,7 @@ const MovieDetail = (props) => {
       setData(movie.results);
     };
     fetchMovie({ url: request }, getMovie);
-  }, [request]);
+  }, [fetchMovie, request]);
 
   // Kiểm tra có video trailer không
   // Nếu không có trailer thì hiển thị ảnh
@@ -52,24 +53,22 @@ const MovieDetail = (props) => {
     }
     if (!error && temp) setTrailer(temp);
     else setTrailer(image);
-  }, [error, data]);
+  }, [error, data, image]);
 
-  
   return (
-    
-    <div className={classes.moviedetail}>            
+    <div className={classes.moviedetail}>
       <div>
         <h1>{props.movie.name || props.movie.title}</h1>
         <p>
           <strong>
-            Release Date: {props.movie.release_date || props.movie.first_air_date}
+            Release Date:{" "}
+            {props.movie.release_date || props.movie.first_air_date}
           </strong>
         </p>
         <p>
           <strong>Vote: {props.movie.vote_average}/10</strong>
         </p>
         <p>{props.movie.overview}</p>
-        
       </div>
       {trailer}
     </div>
